@@ -1,4 +1,5 @@
 const userModel = require('../models/user.model');
+const categoryModel = require('../models/category.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -14,8 +15,11 @@ module.exports = {
             // create user
             user = new userModel({
                 username: req.body.username,
-                password: hash
+                password: hash,
             });
+            const mainCategory = new categoryModel({ name: 'Main', user: user._id });
+            mainCategory.save();
+            user.mainCategoryId = mainCategory._id;
             user.save()
                 .then(() => res.status(201).send('User created.'))
                 .catch(err => res.status(500).send('Error creating user.'));
