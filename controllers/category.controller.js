@@ -13,6 +13,13 @@ module.exports = {
         const categories = await categoryModel.find({ user: req.user._id });
         res.status(200).send(categories);
     },
-    async update(req, res){},
+    async update(req, res){
+        const category = await categoryModel.findOne({ _id: req.params.id });
+        if (!category) return res.status(404).send('Category not found.');
+        category.name = req.body.name;
+        category.save()
+            .then(() => res.status(200).send('Category updated.'))
+            .catch(err => res.status(500).send('Error updating category.'));
+    },
     async delete(req, res){}
 }
