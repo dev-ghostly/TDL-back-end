@@ -10,6 +10,8 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.use(express.json());
 
+app.use('/api/users', require('./routes/user.route'));
+
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
