@@ -9,15 +9,17 @@ module.exports = {
         let user = await userModel.findOne({ username: req.body.username });
         if (user) return res.status(400).send('User already registered.');
         // encrypt password
-        const salt = await bcrypt.genSalt(10);
-        req.body.password = await bcrypt.hash(req.body.password, salt);
-        let newUser = new userModel({
-            username: req.body.username,
-            password: req.body.password
-        });
-        let result = await newUser.save();
-        if (result) return res.status(200).send('User registered successfully');
-        return res.status(400).send('User registration failed');
+        bcrypt.hash(req.body.password, 10, function (err, hash) {
+            if (err) return res.status(500).send('Error encrypting password.');
+            // create user
+            user = new userModel({
+                username: req.body.username,
+                password: hash
+            });
+            user.save()
+                .then(() => res.status(201).send('User created.'))
+                .catch(err => res.status(500).send('Error creating user.'));
+        })
     },
     async login(req, res) {
         // login by checking if user exists
@@ -28,6 +30,6 @@ module.exports = {
         if (!validPassword) return res.status(400).send('Invalid password.');
         // create token
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-        return res.status(200).send(token);
+        return res.status(200).send({ token, message : 'Logged in.'});
     }
 }
