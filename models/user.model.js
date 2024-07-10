@@ -1,11 +1,18 @@
 const {model, Schema} = require('mongoose')
 
 const userSchema = new Schema({
-    username: String,
-    password: String,
+    username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
     mainCategoryId: {
         type: Schema.Types.ObjectId,
-        ref: 'Category'
+        ref: 'Category',
+        required: true
     }
 })
 
