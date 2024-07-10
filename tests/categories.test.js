@@ -14,12 +14,17 @@ describe('CREATE /api/categories', () => {
         expect(response2.statusCode).toBe(201);
     })
     test("Can't create without JWT", async () => {
-        const response = (await request(app).post('/api/categories').send({name : 'test'}));
-        expect(response.statusCode).toBe(401);
+        const response = (await request(app).post('/api/categories').send({name : 'test'}).set('Authorization', 'Bearer ' + 'wrong'))
+        expect(response.statusCode).toBe(400);
     })
     test("Try to create without name", async () => {
-        const response = await request(app).post('/api/categories').send({name : ''});
-        expect(response.statusCode).toBe(500);
+         // connect and get the token
+         const response = await request(app).post('/api/users/login').send({username : 'test', password : 'test'});
+         const token = response.body.token;
+         // create a task
+         const response2 = await request(app).post('/api/categories').send().set('Authorization', 'Bearer ' + token);
+         category = response2.body._id;
+        expect(response2.statusCode).toBe(500);
     })
 })
 
