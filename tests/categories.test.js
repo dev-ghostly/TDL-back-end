@@ -17,6 +17,10 @@ describe('CREATE /api/categories', () => {
         const response = await request(app).post('/api/categories').send({name : 'test'});
         expect(response.statusCode).toBe(401);
     })
+    test("Try to create without name", async () => {
+        const response = await request(app).post('/api/categories').send({name : ''});
+        expect(response.statusCode).toBe(500);
+    })
 })
 
 describe('READ /api/categories', () => {
