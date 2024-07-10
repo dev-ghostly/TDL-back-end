@@ -29,7 +29,14 @@ describe('CREATE /api/categories', () => {
 })
 
 describe('READ /api/categories', () => {
-
+    test("It should return a list of categories", async () => {
+        // connect and get the token
+        const response = await request(app).post('/api/users/login').send({username : 'test', password : 'test'});
+        const token = response.body.token;
+        // get the list of categories
+        const response2 = await request(app).get('/api/categories').set('Authorization', 'Bearer ' + token);
+        expect(response2.body).not.toBeNull();
+    })
 })
 
 describe('UPDATE /api/categories', () => {
