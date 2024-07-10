@@ -41,6 +41,14 @@ describe('READ /api/categories', () => {
         const response = (await request(app).get('/api/categories').set('Authorization', 'Bearer ' + 'wrong'))
         expect(response.statusCode).toBe(400);
     })
+    test("Should be an array of object", async () => {
+        // connect and get the token
+        const response = await request(app).post('/api/users/login').send({username : 'test', password : 'test'});
+        const token = response.body.token;
+        // get the list of categories
+        const response2 = await request(app).get('/api/categories').set('Authorization', 'Bearer ' + token);
+        expect(response2.body).toBeInstanceOf(Array);
+    })
 })
 
 describe('UPDATE /api/categories', () => {
