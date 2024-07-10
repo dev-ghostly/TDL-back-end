@@ -37,6 +37,10 @@ describe('READ /api/categories', () => {
         const response2 = await request(app).get('/api/categories').set('Authorization', 'Bearer ' + token);
         expect(response2.body).not.toBeNull();
     })
+    test("Can't get list without JWT", async () => {
+        const response = (await request(app).get('/api/categories').set('Authorization', 'Bearer ' + 'wrong'))
+        expect(response.statusCode).toBe(400);
+    })
 })
 
 describe('UPDATE /api/categories', () => {
