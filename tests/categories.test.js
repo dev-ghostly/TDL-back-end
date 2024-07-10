@@ -1,4 +1,4 @@
-const app = require('../app');
+const app = require('./app');
 const request = require('supertest');
 
 var category = ''
@@ -14,7 +14,7 @@ describe('CREATE /api/categories', () => {
         expect(response2.statusCode).toBe(201);
     })
     test("Can't create without JWT", async () => {
-        const response = await request(app).post('/api/categories').send({name : 'test'});
+        const response = (await request(app).post('/api/categories').send({name : 'test'}));
         expect(response.statusCode).toBe(401);
     })
     test("Try to create without name", async () => {
