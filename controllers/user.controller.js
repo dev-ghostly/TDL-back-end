@@ -30,7 +30,7 @@ module.exports = {
         let user = await userModel.findOne({ username: req.body.username });
         if (!user) return res.status(400).send('User not found.');
         // check password
-        const validPassword = bcrypt.compare(req.body.password, user.password);
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
         if (!validPassword) return res.status(400).send('Invalid password.');
         // create token
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
