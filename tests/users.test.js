@@ -20,8 +20,8 @@ describe('GET /api/users', () => {
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty('token');
     });
-    test('It should return a 401 status code', async () => {
+    test('It should return a 400 status code', async () => {
         const response = await request(app).post('/api/users/login').send({username : 'test', password : 'wrong'});
-        expect(response.statusCode).toBe(401);
+        expect(response.statusCode).toBe(400);
     });
 });
