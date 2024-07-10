@@ -13,6 +13,10 @@ describe('CREATE /api/categories', () => {
         category = response2.body._id;
         expect(response2.statusCode).toBe(201);
     })
+    test("Can't create without JWT", async () => {
+        const response = await request(app).post('/api/categories').send({name : 'test'});
+        expect(response.statusCode).toBe(401);
+    })
 })
 
 describe('READ /api/categories', () => {
