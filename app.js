@@ -11,6 +11,7 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use(express.json());
 
 app.use('/api/users', require('./routes/user.route'));
+app.use('/api/categories', require('./routes/category.route'));
 
 app.get('/', (req, res) => {
     res.send('Hello World');
