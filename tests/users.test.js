@@ -1,17 +1,4 @@
-const express = require('express');
-const app = express();
-const mongoose = require('mongoose');
-require('dotenv').config();
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI);
-
-app.use(express.json());
-
-app.use('/api/users', require('../routes/user.route'));
-
-app.listen(3000);
-
+const app = require('../app');
 const request = require('supertest');
 
 describe('GET /api/users', () => {
