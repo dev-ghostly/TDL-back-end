@@ -10,7 +10,6 @@ describe('CREATE /api/categories', () => {
         const token = response.body.token;
         // create a task
         const response2 = await request(app).post('/api/categories').send({name : 'test'}).set('Authorization', 'Bearer ' + token);
-        console.log(response2.body);
         category = response2.body.category._id;
         expect(response2.statusCode).toBe(201);
     })
