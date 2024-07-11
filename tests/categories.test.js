@@ -10,7 +10,8 @@ describe('CREATE /api/categories', () => {
         const token = response.body.token;
         // create a task
         const response2 = await request(app).post('/api/categories').send({name : 'test'}).set('Authorization', 'Bearer ' + token);
-        category = response2.body._id;
+        console.log(response2.body);
+        category = response2.body.category._id;
         expect(response2.statusCode).toBe(201);
     })
     test("Can't create without JWT", async () => {
@@ -23,7 +24,6 @@ describe('CREATE /api/categories', () => {
          const token = response.body.token;
          // create a task
          const response2 = await request(app).post('/api/categories').send().set('Authorization', 'Bearer ' + token);
-         category = response2.body._id;
         expect(response2.statusCode).toBe(500);
     })
 })
