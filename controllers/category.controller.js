@@ -6,7 +6,7 @@ module.exports = {
             user: req.user._id
         });
         category.save()
-            .then(() => res.status(201).send('Category created.'))
+            .then((cat) => res.status(201).send({category: cat}))
             .catch(err => res.status(500).send('Error creating category.'));
     },
     async read(req, res){
