@@ -23,8 +23,9 @@ module.exports = {
     },
     async delete(req, res){
         const category = await categoryModel.findOne({ _id: req.params.id });
+        console.log(category);
         if (!category) return res.status(404).send('Category not found.');
-        category.delete()
+        category.deleteOne()
             .then(() => res.status(200).send('Category deleted.'))
             .catch(err => res.status(500).send('Error deleting category.'));
     }
