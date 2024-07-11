@@ -64,6 +64,14 @@ describe('UPDATE /api/categories', () => {
         const response = (await request(app).put('/api/categories/' + category).send({name : 'test2'}).set('Authorization', 'Bearer ' + 'wrong'))
         expect(response.statusCode).toBe(400);
     })
+    test("Try to update without name", async () => {
+        // connect and get the token
+        const response = await request(app).post('/api/users/login').send({username : 'test', password : 'test'});
+        const token = response.body.token;
+        // update the category
+        const response2 = await request(app).put('/api/categories/' + category).send().set('Authorization', 'Bearer ' + token);
+        expect(response2.statusCode).toBe(500);
+    })
 })
 
 describe('DELETE /api/categories', () => {
