@@ -83,4 +83,8 @@ describe('DELETE /api/categories', () => {
         const response2 = await request(app).delete('/api/categories/' + category).set('Authorization', 'Bearer ' + token);
         expect(response2.statusCode).toBe(200);
     })
+    test("Can't delete without JWT", async () => {
+        const response = (await request(app).delete('/api/categories/' + category).set('Authorization', 'Bearer ' + 'wrong'))
+        expect(response.statusCode).toBe(400);
+    })
 })
