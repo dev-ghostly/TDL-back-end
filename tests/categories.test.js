@@ -60,6 +60,10 @@ describe('UPDATE /api/categories', () => {
         const response2 = await request(app).put('/api/categories/' + category).send({name : 'test2'}).set('Authorization', 'Bearer ' + token);
         expect(response2.statusCode).toBe(200);
     })
+    test("Can't update without JWT", async () => {
+        const response = (await request(app).put('/api/categories/' + category).send({name : 'test2'}).set('Authorization', 'Bearer ' + 'wrong'))
+        expect(response.statusCode).toBe(400);
+    })
 })
 
 describe('DELETE /api/categories', () => {
