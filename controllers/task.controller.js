@@ -18,10 +18,10 @@ module.exports = {
     async update(req, res){
         const task = await taskModel.findOne({ _id: req.params.id });
         if (!task) return res.status(404).send('Task not found.');
-        task.title = req.body.title;
-        task.description = req.body.description;
-        task.completed = req.body.completed;
-        task.category = req.body.category;
+        task.title = req.body.title || task.title;
+        task.description = req.body.description || task.description;
+        task.completed = req.body.completed || task.completed;
+        task.category = req.body.category || task.category;
         task.save()
             .then(() => res.status(200).send('Task updated.'))
             .catch(err => res.status(500).send('Error updating task.'));
