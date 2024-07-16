@@ -26,3 +26,26 @@ describe('CREATE /api/tasks', () => {
         expect(response2.statusCode).toBe(500);
     })
 })
+
+describe('READ /api/tasks', () => {
+    test("It should return a list of tasks", async () => {
+        // connect and get the token
+        const response = await request(app).post('/api/users/login').send({username : 'test', password : 'test'});
+        const token = response.body.token;
+        // get the list of tasks
+        const response2 = await request(app).get('/api/tasks').set('Authorization', 'Bearer ' + token);
+        expect(response2.body).not.toBeNull();
+    })
+    test("Can't get list without JWT", async () => {
+        const response = (await request(app).get('/api/tasks').set('Authorization', 'Bearer ' + 'wrong'))
+        expect(response.statusCode).toBe(400);
+    })
+    test("Should be an array of object", async () => {
+        // connect and get the token
+        const response = await request(app).post('/api/users/login').send({username : 'test', password : 'test'});
+        const token = response.body.token;
+        // get the list of tasks
+        const response2 = await request(app).get('/api/tasks').set('Authorization', 'Bearer ' + token);
+        expect(response2.body).toBeInstanceOf(Array);
+    })
+})
