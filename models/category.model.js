@@ -9,7 +9,11 @@ const categorySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    tasks: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Task'
+    }]
 })
 
 module.exports = model('Category', categorySchema)

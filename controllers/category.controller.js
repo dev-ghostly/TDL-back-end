@@ -10,7 +10,8 @@ module.exports = {
             .catch(err => res.status(500).send('Error creating category.'));
     },
     async read(req, res){
-        const categories = await categoryModel.find({ user: req.user._id });
+        // categories & tasks are linked to the user
+        const categories = await categoryModel.find({ user: req.user._id }).populate('tasks');
         res.status(200).send(categories);
     },
     async update(req, res){
