@@ -8,8 +8,8 @@ describe('CREATE /api/tasks', () => {
         // connect and get the token
         const response = await request(app).post('/api/users/login').send({username : 'test', password : 'test'});
         const token = response.body.token;
-        // create a task
-        const response2 = await request(app).post('/api/tasks').send({title : 'test', description : 'test', category : 'test'}).set('Authorization', 'Bearer ' + token);
+        const response2 = await request(app).post('/api/tasks').send({title : 'test', description : 'test', category : 'test', user : "668cfebecee8150feb91372d", category : "668cfebecee8150feb91372e" }).set('Authorization', 'Bearer ' + token);
+        console.log(response2.body);
         task = response2.body.task._id;
         expect(response2.statusCode).toBe(201);
     })

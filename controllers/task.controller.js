@@ -8,7 +8,7 @@ module.exports = {
             user: req.user._id
         });
         task.save()
-            .then(() => res.status(201).send('Task created.'))
+            .then((task_saved) => res.status(201).send({task: task_saved}))
             .catch(err => res.status(500).send('Error creating task.'));
     },
     async read(req, res){
