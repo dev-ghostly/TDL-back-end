@@ -1,15 +1,22 @@
 const taskModel = require('../models/task.model');
+const categoryModel = require('../models/category.model');
 module.exports = {
     async create(req, res){
-        const task = new taskModel({
-            title: req.body.title,
-            description: req.body.description,
-            category: req.body.category,
-            user: req.user._id
-        });
-        task.save()
-            .then((task_saved) => res.status(201).send({task: task_saved}))
-            .catch(err => res.status(500).send('Error creating task.'));
+        try {
+            const task = new taskModel({
+                title: req.body.title,
+                description: req.body.description,
+                category: req.body.category,
+                user: req.user._id
+            });
+            await task.save();
+    
+            await categoryModel.findOneAndUpdate(req.body.category, { $push: { tasks: task._id } });
+            
+            res.status(201).send(task);
+        } catch (error) {
+            res.status(500).send('Error creating task.');
+        }
     },
     async read(req, res){
         const tasks = await taskModel.find({ user: req.user._id });
