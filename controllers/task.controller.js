@@ -42,11 +42,15 @@ module.exports = {
             .then(() => res.status(200).send('Task updated.'))
             .catch(err => res.status(500).send('Error updating task.'));
     },
-    async delete(req, res){
+    async delete(req, res) {
         const task = await taskModel.findOne({ _id: req.params.id });
         if (!task) return res.status(404).send('Task not found.');
-        task.delete()
-            .then(() => res.status(200).send('Task deleted.'))
+        await task.remove()
+            .then(async () => {
+                // Remove task reference from the category
+                await categoryModel.findByIdAndUpdate(task.category, { $pull: { tasks: task._id } });
+                res.status(200).send('Task deleted.');
+            })
             .catch(err => res.status(500).send('Error deleting task.'));
     }
 }
