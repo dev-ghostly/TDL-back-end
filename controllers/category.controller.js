@@ -11,7 +11,7 @@ module.exports = {
     },
     async read(req, res){
         // categories & tasks are linked to the user
-        const categories = await categoryModel.find({ user: req.user._id }).populate('tasks');
+        const categories = await categoryModel.find({ user: req.user._id }).populate('tasks').exec();
         res.status(200).send(categories);
     },
     async update(req, res){
