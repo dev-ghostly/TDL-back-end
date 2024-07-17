@@ -1,7 +1,7 @@
 const taskModel = require('../models/task.model');
 const categoryModel = require('../models/category.model');
 module.exports = {
-    async create(req, res){
+    async create(req, res) {
         try {
             const task = new taskModel({
                 title: req.body.title,
@@ -10,11 +10,20 @@ module.exports = {
                 user: req.user._id
             });
             await task.save();
-    
-            await categoryModel.findOneAndUpdate(req.body.category, { $push: { tasks: task._id } });
-            
+
+            const category = await categoryModel.findByIdAndUpdate(
+                req.body.category,
+                { $push: { tasks: task._id } },
+                { new: true, useFindAndModify: false }
+            );
+
+            if (!category) {
+                return res.status(404).send('Category not found.');
+            }
+
             res.status(201).send(task);
         } catch (error) {
+            console.error(error); // Log the error for debugging purposes
             res.status(500).send('Error creating task.');
         }
     },
