@@ -43,14 +43,22 @@ module.exports = {
             .catch(err => res.status(500).send('Error updating task.'));
     },
     async delete(req, res) {
-        const task = await taskModel.findOne({ _id: req.params.id });
-        if (!task) return res.status(404).send('Task not found.');
-        await task.remove()
-            .then(async () => {
-                // Remove task reference from the category
-                await categoryModel.findByIdAndUpdate(task.category, { $pull: { tasks: task._id } });
-                res.status(200).send('Task deleted.');
-            })
-            .catch(err => res.status(500).send('Error deleting task.'));
+        try {
+            const task = await taskModel.findOne({ _id: req.params.id });
+            if (!task) return res.status(404).send('Task not found.');
+            await task.remove();
+            // delete the task from the category
+            const category = await categoryModel.findByIdAndUpdate(
+                task.category,
+                { $pull: { tasks: task._id } },
+                { new: true, useFindAndModify: false }
+            );
+            if (!category) {
+                return res.status(404).send('Category not found.');
+            }
+            return res.status(200).send('Task deleted.');
+        } catch (error) {
+            return res.status(500).send('Error deleting task.');
+        }
     }
 }
