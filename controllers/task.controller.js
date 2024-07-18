@@ -58,6 +58,7 @@ module.exports = {
             }
             return res.status(200).send('Task deleted.');
         } catch (error) {
+            console.error(error); // Log the error for debugging purposes
             return res.status(500).send('Error deleting task.');
         }
     }
