@@ -46,7 +46,7 @@ module.exports = {
         try {
             const task = await taskModel.findOne({ _id: req.params.id });
             if (!task) return res.status(404).send('Task not found.');
-            await task.remove();
+            await task.deleteOne();
             // delete the task from the category
             const category = await categoryModel.findByIdAndUpdate(
                 task.category,
