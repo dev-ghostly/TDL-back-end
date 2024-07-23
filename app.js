@@ -16,7 +16,7 @@ app.use('/remindme/api/users', require('./routes/user.route'));
 app.use('/remindme/api/categories', require('./routes/category.route'));
 app.use('/remindme/api/tasks', require('./routes/task.route'));
 
-app.get('/', (req, res) => {
+app.get('/remindme', (req, res) => {
     res.send('Hello World');
 });
 
