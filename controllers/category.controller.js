@@ -17,7 +17,7 @@ module.exports = {
     async update(req, res){
         const category = await categoryModel.findOne({ _id: req.params.id });
         if (!category) return res.status(404).send('Category not found.');
-        category.name = req.body.name;
+        category.name = req.body.name || category.name;
         category.save()
             .then(() => res.status(200).send('Category updated.'))
             .catch(err => res.status(500).send('Error updating category.'));
